@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 const Login = () => {
    const [emailId, setEmailId] = useState("meena@gmail.com");
    const [password,setPassword] = useState("Meena@123");
+   const [errorMsg, setErrorMsg] = useState("");
    const dispatch = useDispatch();
    const navigate = useNavigate();
 
@@ -19,6 +20,7 @@ const Login = () => {
       return navigate("/feed");
     }
     catch(error){
+      setErrorMsg(error?.response?.data || "Something went wrong");
       console.log("Error occured..!"+error);
     }
    }
@@ -54,6 +56,7 @@ const Login = () => {
               />
             </label>
           </div>
+          <p className='text-red-600'>{errorMsg}</p>
           <div className="card-actions justify-center m-2">
             <button className="btn btn-primary" onClick={handleLogin}>
               Login
