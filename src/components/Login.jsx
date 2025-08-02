@@ -17,7 +17,7 @@ const Login = () => {
     try{
       const res = await axios.post(LOGIN_API_URL,{emailId,password}, { withCredentials: true });
       dispatch(addUser(res.data));
-      return navigate("/feed");
+      return navigate("/");
     }
     catch(error){
       setErrorMsg(error?.response?.data || "Something went wrong");
