@@ -1,13 +1,26 @@
 import axios from "axios";
 import { BASE_URL } from "../utils/constants"
 import { useDispatch, useSelector } from "react-redux";
-import { addRequests } from "../utils/requestSlicer";
+import { addRequests,removeRequests } from "../utils/requestSlicer";
 import { useEffect } from "react";
 
 
 const Requests = () => {
   const requests = useSelector((store) => store.requests);
   const dispatch = useDispatch();
+
+  const reviewRequests = async(status, _id)=>{
+    console.log(status,_id,"checking something...!");
+    try{
+      console.log(BASE_URL+'request/review/'+status+'/'+_id,'URL cheking');
+      const res = await axios.post(BASE_URL+'/request/review/'+status+'/'+_id,{},{withCredentials:true});
+      dispatch(removeRequests(_id));
+    }catch(error){
+      console.log("Issued occured while reviewing requests..!");
+    }
+  }
+
+
   const fetchRequests = async () => {
     try {
       const res = await axios.get(BASE_URL + "/user/requests/received", {
@@ -21,6 +34,8 @@ const Requests = () => {
   }, []);
   if (!requests) return;
   if (requests.length === 0) return <h1> No Requests Found</h1>;
+
+
   return (
     <div className="text-center my-10">
       <h1 className="text-bold text-white text-3xl">Connection Requests</h1>
@@ -47,8 +62,8 @@ const Requests = () => {
               <p>{about}</p>
             </div>
             <div>
-              <button className="btn btn-primary mx-2">Reject</button>
-              <button className="btn btn-secondary mx-2">Accept</button>
+              <button className="btn btn-primary mx-2" onClick={()=>{reviewRequests('rejected',request._id)}}>Reject</button>
+              <button className="btn btn-secondary mx-2" onClick={()=>{reviewRequests('accepted',request._id)}}>Accept</button>
             </div>
           </div>
         );
