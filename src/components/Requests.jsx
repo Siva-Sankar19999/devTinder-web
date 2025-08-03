@@ -10,9 +10,7 @@ const Requests = () => {
   const dispatch = useDispatch();
 
   const reviewRequests = async(status, _id)=>{
-    console.log(status,_id,"checking something...!");
     try{
-      console.log(BASE_URL+'request/review/'+status+'/'+_id,'URL cheking');
       const res = await axios.post(BASE_URL+'/request/review/'+status+'/'+_id,{},{withCredentials:true});
       dispatch(removeRequests(_id));
     }catch(error){
@@ -34,8 +32,6 @@ const Requests = () => {
   }, []);
   if (!requests) return;
   if (requests.length === 0) return <h1> No Requests Found</h1>;
-
-
   return (
     <div className="text-center my-10">
       <h1 className="text-bold text-white text-3xl">Connection Requests</h1>
